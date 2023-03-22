@@ -31,3 +31,4 @@ class SignupForm(UserCreationForm):
 class CodeConfirmForm(forms.Form):
     code = forms.CharField(label='Код подтверждения', help_text='Введите код подтверждения, полученный на e-mail')
 
+

@@ -16,7 +16,6 @@ def send_user_confirm_code(sender, instance, created, **kwargs):
         html_content = render_to_string('activate_code_email.html', {
             'user': user,
             'code': instance.code,
-            'domain': os.environ.get("HOST", default="http://localhost:8000/")
         })
         msg = EmailMultiAlternatives(
                 subject=f'Спасибо за регистрацию, {user.username}.',
@@ -26,4 +25,5 @@ def send_user_confirm_code(sender, instance, created, **kwargs):
             )
         msg.attach_alternative(html_content, "text/html")
         msg.send()
+
 
