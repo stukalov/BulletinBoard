@@ -1,6 +1,9 @@
+import datetime
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
 from .models import BoardUser, BoardUserActivateCode
 
 
@@ -20,15 +23,26 @@ class SignupForm(UserCreationForm):
 
     def save(self):
         user = super().save(False)
-        user.email = self.cleaned_data["email"]
+        # user.email = self.cleaned_data["email"]
         user.is_active = False
         user.save()
         BoardUser.objects.create(user=user, subscribe=self.cleaned_data["subscribe"])
         BoardUserActivateCode.generate(user)
         return user
 
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        # Удаляем пользователя из базы если срок активации у него уже истек
+        User.objects.filter(
+            username=username,
+            boarduseractivatecode__valid_till__lt=datetime.datetime.now(),
+        ).delete()
+        return username
+
 
 class CodeConfirmForm(forms.Form):
     code = forms.CharField(label='Код подтверждения', help_text='Введите код подтверждения, полученный на e-mail')
+
+    # def save(self):
 
 
