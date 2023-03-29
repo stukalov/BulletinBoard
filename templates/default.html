@@ -19,11 +19,19 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
             <div class="container px-4">
-                <a class="navbar-brand" href="#">Доска объявлений</a>
+                <a class="navbar-brand" href="/">Доска объявлений</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="/news/">Последние новости</a></li>
+                      {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'replay_list' %}">Отклики на мои объявления</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'replay_my_list' %}">Мои отклики</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'bulletin_my_list' %}">Мои объявления</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">{{ user }}: Выход</a></li>
+                      {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'board_signup' %}">Регистрация</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Вход</a></li>
+                      {% endif %}
                     </ul>
                 </div>
             </div>

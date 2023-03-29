@@ -1,0 +1,49 @@
+{% extends 'default.html' %}
+
+{% load board_filters %}
+
+{% block title %}
+  {{ bulletin.title }}
+{% endblock %}
+
+{% block content %}
+  <h2>
+    Ваш отклик
+  </h2>
+  <div>
+    {{ replay.created|date:"d.m.Y H:i:s" }}
+  </div>
+  <div>
+    Статус:&nbsp;
+    {% if replay.accepted %}
+     Отклик принят
+    {% else %}
+      Отклик не рассмотрен
+    {% endif %}
+  </div>
+  <div>
+    {{ replay.body }}
+  </div>
+
+  <h2>
+    На объявление
+  </h2>
+  <h3>
+    {{ replay.bulletin.title }}
+  </h3>
+  <div>
+    {{ replay.bulletin.created|date:"d.m.Y H:i:s" }}
+  </div>
+  <div>
+    Категория: {{ replay.bulletin.category }}
+  </div>
+  <div class="author">
+    Автор: {{ replay.bulletin.author }}
+  </div>
+  <div>
+    {% autoescape off %}
+    {{ replay.bulletin.body }}
+    {% endautoescape %}
+  </div>
+{% endblock %}
+

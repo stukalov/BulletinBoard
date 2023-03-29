@@ -1,0 +1,72 @@
+[
+  {
+    "model": "board.category",
+    "pk": 1,
+    "fields": {
+      "name": "Танки"
+    }
+  },
+  {
+    "model": "board.category",
+    "pk": 2,
+    "fields": {
+      "name": "Хилы"
+    }
+  },
+  {
+    "model": "board.category",
+    "pk": 3,
+    "fields": {
+      "name": "ДД"
+    }
+  },
+  {
+    "model": "board.category",
+    "pk": 4,
+    "fields": {
+      "name": "Торговцы"
+    }
+  },
+  {
+    "model": "board.category",
+    "pk": 5,
+    "fields": {
+      "name": "Гилдмастеры"
+    }
+  },
+  {
+    "model": "board.category",
+    "pk": 6,
+    "fields": {
+      "name": "Квестгиверы"
+    }
+  },
+  {
+    "model": "board.category",
+    "pk": 7,
+    "fields": {
+      "name": "Кузнецы"
+    }
+  },
+  {
+    "model": "board.category",
+    "pk": 8,
+    "fields": {
+      "name": "Кожевники"
+    }
+  },
+  {
+    "model": "board.category",
+    "pk": 9,
+    "fields": {
+      "name": "Зельевары"
+    }
+  },
+  {
+    "model": "board.category",
+    "pk": 10,
+    "fields": {
+      "name": "Мастера заклинаний"
+    }
+  }
+]

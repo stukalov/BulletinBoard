@@ -1,0 +1,65 @@
+{% extends 'default.html' %}
+
+{% load board_filters %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+    <div>
+      <a href="{% url 'bulletin_create' %}">Добавить объявление</a>
+    </div>
+  {% endif %}
+
+  {% for bulletin in bulletins %}
+    <div class="bulletin">
+      <h2 class="title">
+        {% can_edit_bulletin bulletin as permition %}
+        {% if permition %}
+          {% firstof "bulletin_detail" as url_name %}
+        {% else %}
+          {% firstof "bulletin_replay" as url_name %}
+        {% endif %}
+        <a href="{% url url_name bulletin.pk %}">
+          {{ bulletin.title }}
+        </a>
+      </h2>
+      <div class="date">
+        {{ bulletin.created|date:"d.m.Y H:i:s" }}
+      </div>
+      <div class="date">
+        Категория: {{ bulletin.category }}
+      </div>
+      <div class="author">
+        Автор: {{ bulletin.author }}
+      </div>
+      <div class="content">
+        {% autoescape off %}
+        {{ bulletin.body }}
+        {% endautoescape %}
+      </div>
+    </div>
+
+    {# Добавляем пагинацию на страницу #}
+    {% if page_obj.has_previous %}
+      <a href="?{% url_replace page=1 %}">1</a>
+      {% if page_obj.previous_page_number != 1 %}
+          ...
+        <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+      {% endif %}
+    {% endif %}
+    {{ page_obj.number }}
+    {% if page_obj.has_next %}
+      <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+      {% if paginator.num_pages != page_obj.next_page_number %}
+        ...
+        <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+      {% endif %}
+    {% endif %}
+
+  {% empty %}
+    <div>
+      Еще нет ни одного объявления
+    </div>
+  {% endfor %}
+
+{% endblock %}
+

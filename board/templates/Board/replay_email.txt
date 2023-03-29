@@ -1,0 +1,6 @@
+Отклик на ваше объявление
+
+{{ bulletin.title }}
+
+{{ replay.body }}
+

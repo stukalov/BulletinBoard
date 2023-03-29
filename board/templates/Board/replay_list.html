@@ -1,0 +1,91 @@
+{% extends 'default.html' %}
+
+{% load board_filters %}
+
+{% block content %}
+  <h1>
+    Отклики на мои объявления
+  </h1>
+
+  {% if filter_set %}
+    <form action="" method="get">
+      {{ filter_set.form.as_p }}
+      <input type="submit" value="Найти" />
+    </form>
+  {% endif %}
+
+
+  {% for replay in replays %}
+    <div class="replay">
+      <h2>
+        <a href="{% url 'replay_detail' replay.pk %}">
+          Отклик на ваше объявление
+        </a>
+      </h2>
+      <div>
+        {{ replay.created|date:"d.m.Y H:i:s" }}
+      </div>
+      <div>
+        Статус:&nbsp;
+        {% if replay.accepted %}
+         Отклик принят
+        {% else %}
+          Отклик не рассмотрен
+        {% endif %}
+      </div>
+      <div class="author">
+        Пользователь: {{ replay.user }}
+      </div>
+      <div>
+        {{ replay.body }}
+      </div>
+
+      <h2>
+        Ваше объявление
+      </h2>
+      <h3 class="title">
+        <a href="{% url 'bulletin_detail' replay.bulletin.pk %}">
+          {{ replay.bulletin.title }}
+        </a>
+      </h3>
+      <div class="date">
+        {{ replay.bulletin.created|date:"d.m.Y H:i:s" }}
+      </div>
+      <div class="date">
+        Категория: {{ replay.bulletin.category }}
+      </div>
+      <div class="author">
+        Автор: {{ replay.bulletin.author }}
+      </div>
+      <div class="content">
+        {% autoescape off %}
+        {{ replay.bulletin.body }}
+        {% endautoescape %}
+      </div>
+    </div>
+
+    {# Добавляем пагинацию на страницу #}
+    {% if page_obj.has_previous %}
+      <a href="?{% url_replace page=1 %}">1</a>
+      {% if page_obj.previous_page_number != 1 %}
+          ...
+        <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+      {% endif %}
+    {% endif %}
+    {{ page_obj.number }}
+    {% if page_obj.has_next %}
+      <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+      {% if paginator.num_pages != page_obj.next_page_number %}
+        ...
+        <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+      {% endif %}
+    {% endif %}
+
+  {% empty %}
+    <div>
+      Еще нет откликов на мои объявления
+    </div>
+  {% endfor %}
+
+{% endblock %}
+

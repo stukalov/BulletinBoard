@@ -13,12 +13,36 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from ckeditor_uploader import views as ck_views
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
-from Board.urls import board_urlpatterns
+from django.contrib.auth.decorators import login_required
+from django.urls import path, re_path, include
+from django.views.decorators.cache import never_cache
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('board/', include(board_urlpatterns))
+from board.urls import board_urlpatterns
+from board.views import index_page
+
+
+ck_urlpatterns = [
+    re_path(r"^upload/", login_required(ck_views.upload), name="ckeditor_upload"),
+    re_path(
+        r"^browse/",
+        never_cache(login_required(ck_views.browse)),
+        name="ckeditor_browse",
+    ),
 ]
+
+urlpatterns = (
+    [
+        path('', index_page),
+        path('accounts/', include('django.contrib.auth.urls')),
+        path('board/', include(board_urlpatterns)),
+
+        re_path(r"^admin/", admin.site.urls),
+        re_path(r"^ckeditor/", include(ck_urlpatterns)),
+    ]
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)

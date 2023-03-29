@@ -1,0 +1,36 @@
+{% extends 'default.html' %}
+
+{% load board_filters %}
+
+{% block title %}
+  {{ bulletin.title }}
+{% endblock %}
+
+{% block content %}
+  <h1>
+    {{ bulletin.title }}
+  </h1>
+  <div>
+    {{ bulletin.created|date:"d.m.Y H:i:s" }}
+  </div>
+  <div>
+    Категория: {{ bulletin.category }}
+  </div>
+  <div class="author">
+    Автор: {{ bulletin.author }}
+  </div>
+  <div>
+    {% autoescape off %}
+    {{ bulletin.body }}
+    {% endautoescape %}
+  </div>
+  {% can_edit_bulletin bulletin as permition %}
+  {% if permition %}
+    <div>
+      <a href="{% url 'bulletin_edit' bulletin.pk %}">Редактировать</a>
+      &nbsp;
+      <a href="{% url 'bulletin_delete' bulletin.pk %}">Удалить</a>
+    </div>
+  {% endif %}
+{% endblock %}
+

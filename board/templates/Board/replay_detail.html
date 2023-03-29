@@ -1,0 +1,62 @@
+{% extends 'default.html' %}
+
+{% load board_filters %}
+
+{% block title %}
+  {{ bulletin.title }}
+{% endblock %}
+
+{% block content %}
+  <h2>
+    Отклик на ваше объявление
+  </h2>
+  <div class="replay-date">
+    {{ replay.created|date:"d.m.Y H:i:s" }}
+  </div>
+  <div class="replay-status">
+    Статус:&nbsp;
+    {% if replay.accepted %}
+     Отклик принят
+    {% else %}
+      Отклик не рассмотрен
+    {% endif %}
+  </div>
+  <div class="replay-user">
+    Пользователь: {{ replay.user }}
+  </div>
+  <div class="replay-body">
+    {{ replay.body }}
+  </div>
+  <h2>
+    Ваше объявление
+  </h2>
+  <h3>
+    {{ replay.bulletin.title }}
+  </h3>
+  <div>
+    {{ replay.bulletin.created|date:"d.m.Y H:i:s" }}
+  </div>
+  <div>
+    Категория: {{ replay.bulletin.category }}
+  </div>
+  <div class="author">
+    Автор: {{ replay.bulletin.author }}
+  </div>
+  <div>
+    {% autoescape off %}
+    {{ replay.bulletin.body }}
+    {% endautoescape %}
+  </div>
+  {% if not replay.accepted %}
+    <div>
+      <a href="{% url 'replay_accept' replay.pk %}">
+        Принять отклик
+      </a>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="{% url 'replay_decline' replay.pk %}">
+        Удалить отклик
+      </a>
+    </div>
+  {% endif %}
+{% endblock %}
+
